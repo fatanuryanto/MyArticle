@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,8 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        //
+        $categories=Category::get();
+        return view('article.insert',compact('categories'));
     }
 
     /**
@@ -30,7 +32,13 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+ 
+        Article::create([
+    		'title' => $request->title,
+    		'text' => $request->text,
+            'category_id'=>$request->category
+    	]);
+        return redirect("/");
     }
 
     /**
