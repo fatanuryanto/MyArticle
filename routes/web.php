@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,10 @@ Route::get('/dashboard', function () {
 Route::get('/article/show/{id}',[ArticleController::class, 'show'])->name('article.show');
 Route::get('/article/create',[ArticleController::class, 'create'])->name('article.create');
 Route::post('/article/store',[ArticleController::class, 'store'])->name('article.store');
+
+Route::get('/category/index}',[CategoryController::class, 'index'])->name('category.index');
+Route::post('/category/store',[CategoryController::class, 'store'])->name('category.store');
+Route::get('/category/delete/{id}',[CategoryController::class, 'destroy'])->name('category.delete');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
