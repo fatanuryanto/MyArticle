@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use File;
 use App\Models\Article;
 use App\Models\Tag;
 use App\Models\Category;
@@ -15,8 +16,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles=Article::with('category')->paginate(10);
-        return view('welcome',compact('articles'));
+        $articles=Article::with('category')->paginate(5);
+        return view('article.index',compact('articles'));
     }
 
     /**
@@ -33,19 +34,31 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+			'title' => 'required|max:50',
+			'text' => 'required',
+            'category' => 'required',
+            // 'filename'=>'mimes:img,jpg,jpeg,svg,png'
+		]);
+
+        $upload=$request->file('img');
+        $filename=time().'.'.$upload->getClientOriginalExtension();
+        $upload->move(public_path('uploads'), $filename);
         $tags=$request->tags;
         $tags=explode(" ",$tags);
         Article::create([
     		'title' => $request->title,
     		'text' => $request->text,
-            'category_id'=>$request->category
+            'category_id'=>$request->category,
+            'img'=>$filename
     	]);
+
         foreach($tags as $tag){
             Tag::firstOrCreate(
                 ['name'=>$tag,'article_id'=>Article::get()->last()->id]
             );
         }
-        return redirect("/");
+        return redirect("/") ->with('success','You have successfully upload file.');
     }
 
     /**
@@ -61,17 +74,32 @@ class ArticleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Article $article)
+    public function edit($id)
     {
-        //
+        $article=Article::find($id);
+        $categories=Category::get();
+        return view('article.edit',compact('article','categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Article $article)
+    public function update(Request $request,$id)
     {
-        //
+        
+        $tags=$request->tags;
+        $tags=explode(" ",$tags);
+        Article::where('id',$id)->update([
+    		'title' => $request->title,
+    		'text' => $request->text,
+            'category_id'=>$request->category
+    	]);
+        foreach($tags as $tag){
+            Tag::firstOrCreate(
+                ['name'=>$tag,'article_id'=>Article::get()->last()->id]
+            );
+        }
+        return redirect("/article/show/".$id);
     }
 
     /**
@@ -79,7 +107,7 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        $tag=Tag::destroy($id);
-        return redirect()->back();
+        Article::destroy($id);
+        return redirect("/");
     }
 }

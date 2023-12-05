@@ -13,7 +13,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories=Category::get();
+        $categories=Category::with('article')->get();
         return view('category.show',compact('categories'));
     }
 
@@ -66,6 +66,7 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         Category::destroy($id);
+        
         return redirect()->back();
     }
 }

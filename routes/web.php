@@ -26,8 +26,11 @@ Route::get('/dashboard', function () {
 Route::get('/article/show/{id}',[ArticleController::class, 'show'])->name('article.show');
 Route::get('/article/create',[ArticleController::class, 'create'])->name('article.create');
 Route::post('/article/store',[ArticleController::class, 'store'])->name('article.store');
+Route::get('/article/edit/{id}',[ArticleController::class, 'edit'])->name('article.edit');
+Route::post('/article/update/{id}',[ArticleController::class, 'update'])->name('article.update');
+Route::get('/article/delete/{id}',[ArticleController::class, 'destroy'])->name('article.delete');
 
-Route::get('/category/index}',[CategoryController::class, 'index'])->name('category.index');
+Route::get('/category/index',[CategoryController::class, 'index'])->name('category.index');
 Route::post('/category/store',[CategoryController::class, 'store'])->name('category.store');
 Route::get('/category/delete/{id}',[CategoryController::class, 'destroy'])->name('category.delete');
 
