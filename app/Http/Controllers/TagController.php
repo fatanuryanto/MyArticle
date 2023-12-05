@@ -13,7 +13,9 @@ class TagController extends Controller
      */
     public function index()
     {
-        //
+        $tags=Tag::with('article')->get();
+
+        return view('tag.show',compact('tags'));
     }
 
     /**
@@ -59,8 +61,9 @@ class TagController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Tag $tag)
+    public function destroy($id)
     {
-        //
+        $tag=Tag::destroy($id);
+        return redirect()->back();
     }
 }

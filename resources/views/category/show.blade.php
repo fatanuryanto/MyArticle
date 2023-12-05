@@ -23,14 +23,14 @@
                     <th>Kategori</th>
                     <th>Aksi</th>
                 </tr>
-                <?php $no=0?>
+                <?php $no=1?>
                 @foreach($categories as $category)
                 <tr>
                     <td>{{$no}}</td>
                     <td>{{$category->name}}</td>
                     <td><a href="/category/delete/{{$category->id}}">Hapus</a></td>
                 </tr>
-                @no=no+1
+                <?php $no=$no+1 ?>
                 @endforeach
             </table>
            

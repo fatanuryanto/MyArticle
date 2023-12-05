@@ -24,7 +24,8 @@
                 @foreach($categories as $category)
                 <option value={{$category->id}}>{{$category->name}}</option>
                 @endforeach
-            </select>
+            </select><br>
+            Tag (pisahkan dengan Space)<input type="text" name="tags">
             <input type="submit" value="Submit">
         </form>
     </body>
