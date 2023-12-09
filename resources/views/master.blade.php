@@ -15,7 +15,7 @@
         @include('layouts.header')
 
         
-        <div class="w-full m-0 p-0 bg-cover bg-bottom" style="background-image:url({{asset('uploads/banner.jpg')}}); height: 60vh; max-height:460px;">
+        <div class="w-full m-0 p-0 pt-5 bg-cover bg-bottom" style="background-image:url({{asset('uploads/banner.jpg')}}); height: 60vh; max-height:460px;">
             <div class="container max-w-4xl mx-auto pt-20 text-center break-normal">
                 <!--Title-->
                 <h1 class="text-white font-extrabold text-3xl md:text-5xl">
