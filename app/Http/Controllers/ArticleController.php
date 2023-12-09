@@ -6,6 +6,7 @@ use File;
 use App\Models\Article;
 use App\Models\Tag;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -66,9 +67,8 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $article=Article::find($id);
-        $tags=Tag::where('article_id',$id)->get();
-        return view('article.show',compact('article','tags'));
+        $article=Article::with('comment','tag')->find($id);
+        return view('article.show',compact('article'));
     }
 
     /**

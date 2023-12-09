@@ -16,7 +16,7 @@
 
                 <p class="py-6">{{$article->text}}</p>	
 
-                @foreach($tags as $tag)
+                @foreach($article->tag as $tag)
                     <i>#{{$tag->name}}</i> 
                 @endforeach
             </div>
@@ -27,48 +27,40 @@
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Komentar</h2>
                     </div>
-                    <form class="mb-6">
-                        <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Nama Anda" required>
-                        <textarea id="message" rows="4" class="my-1 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Apa yang anda pikirkan?"></textarea>
+                    <form class="mb-6" action="/comment/store" action="post">
+                        <input type="hidden" name="article_id" value={{$article->id}}>
+                        <input type="text" name="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Nama Anda" required>
+                        <textarea name="comment" rows="4" class="my-1 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Apa yang anda pikirkan?" required></textarea>
                         <button type="submit"
                            class="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
                             Kirim Komentar
                         </button>
                     </form>
+
+                    @foreach($article->comment as $comment)
                     <article class="p-6 text-base bg-white rounded-lg dark:bg-gray-900">
                         <footer class="flex justify-between items-center mb-2">
                             <div class="flex items-center">
-                                <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">Nama pengomentar</p>
-                                <p class="text-sm text-gray-600 dark:text-gray-400"><time>Feb. 8, 2022</time></p>
+                                <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">{{$comment->name}}</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400"><time>{{$comment->created_at}}</time></p>
                             </div>
-                            <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment1"
-                                class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                                type="button">
-                                @auth
-                                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
-                                    <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
-                                </svg>
-                                @endauth
-                            </button>
 
-                            <!-- Dropdown menu -->
-                            <div id="dropdownComment1"
-                                class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                    aria-labelledby="dropdownMenuIconHorizontalButton">
-                                    <li>
-                                        <a href="#"
-                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove</a>
-                                    </li>
-                                </ul>
-                            </div>
+                            @auth
+                            <a href="/comment/delete/{{$comment->id}}" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                            <!-- Heroicon name: outline/x -->
+                                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                            @endauth
                             
                         </footer>
-                        <p class="text-gray-500 dark:text-gray-400">Isi Komen</p>
+                        <p class="text-gray-500 dark:text-gray-400">{{$comment->comment}}</p>
                     </article>
-                    
+                    @endforeach
                 </div>
             </section>
+
         </div>
     </div>
     <br>

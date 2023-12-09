@@ -14,7 +14,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories=Category::with('article')->get();
-        return view('category.show',compact('categories'));
+        return view('category.index',compact('categories'));
     }
 
     /**
@@ -30,9 +30,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        Category::create([
-    		'name' => $request->name
-    	]);
+        Category::create($request->all(),['']);
         return redirect()->back();
     }
 

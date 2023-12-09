@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tag;
+use App\Models\Comment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class TagController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $tags=Tag::with('article')->get();
-
-        return view('tag.index',compact('tags'));
+        $comments=Comment::with('article')->get();
+        return view('comment.index',compact('comments'));
     }
 
     /**
@@ -31,13 +30,17 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Comment::create(
+            $request->all(),
+            ['article_id'=>$request->article_id]
+        );
+        return redirect()->back();
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Tag $tag)
+    public function show(Comment $comment)
     {
         //
     }
@@ -45,7 +48,7 @@ class TagController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Tag $tag)
+    public function edit(Comment $comment)
     {
         //
     }
@@ -53,7 +56,7 @@ class TagController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tag $tag)
+    public function update(Request $request, Comment $comment)
     {
         //
     }
@@ -63,7 +66,7 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-        $tag=Tag::destroy($id);
+        Comment::destroy($id);
         return redirect()->back();
     }
 }

@@ -29,9 +29,8 @@
                         <p class="text-gray-800 font-serif text-base px-6 mb-5">
                             {{$article->text}} 
                         </p>
-                <div class="flex items-center justify-between">
-                    <p class="text-gray-600 text-xs md:text-sm">Kategori:</p>
-                    <p class="text-gray-600 text-xs md:text-sm">{{$article->category->name}}</p>
+                <div class="flex items-center justify-end">
+                    <p class="text-gray-600 text-xs md:text-sm">Kategori: {{$article->category->name}}</p>
                 </div>
             </div>
         </div>
