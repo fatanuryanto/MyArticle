@@ -17,10 +17,16 @@
                 <p class="py-6">{{$article->text}}</p>	
 
                 @foreach($article->tag as $tag)
-                    <i>#{{$tag->name}}</i> 
+                    <i class="text-base">#{{$tag->name}}</i> 
                 @endforeach
-            </div>
 
+                @auth
+                <div class="flex justify-center">
+                    <a href="/article/edit/{{$article->id}}" class="mx-1 text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Ubah</a>
+                    <a href="/article/delete/{{$article->id}}" class="mx-1 text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Hapus</a>
+                </div>
+                @endauth
+            </div>
             <!-- Comment Section -->
             <section class="bg-white dark:bg-gray-900 py-8 lg:py-16 antialiased">
                 <div class="max-w-2xl mx-auto px-4">
@@ -51,16 +57,16 @@
                                 <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
-                            </button>
+                            </a>
                             @endauth
                             
                         </footer>
                         <p class="text-gray-500 dark:text-gray-400">{{$comment->comment}}</p>
                     </article>
                     @endforeach
+                    <a href="/" type="button" class="mx-1 text-white bg-gradient-to-br from-green-400 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Kembali</a>
                 </div>
             </section>
-
         </div>
     </div>
     <br>

@@ -39,7 +39,7 @@ class ArticleController extends Controller
 			'title' => 'required|max:50',
 			'text' => 'required',
             'category' => 'required',
-            // 'filename'=>'mimes:img,jpg,jpeg,svg,png'
+            'img'=>'mimes:jpeg,jpg,png,img'
 		]);
 
         $upload=$request->file('img');
@@ -55,8 +55,12 @@ class ArticleController extends Controller
     	]);
 
         foreach($tags as $tag){
+            if($tag==" "){
+                continue;
+            }
             Tag::firstOrCreate(
-                ['name'=>$tag,'article_id'=>Article::get()->last()->id]
+                ['name'=>$tag],
+                ['article_id'=>Article::get()->last()->id]
             );
         }
         return redirect("/") ->with('success','You have successfully upload file.');
@@ -76,7 +80,13 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        $article=Article::find($id);
+        $tags="";
+        $article=Article::with("tag")->find($id);
+        foreach($article->tag as $tag){
+            $tags.=$tag->name;
+            $tags.=" ";
+        }
+        $article->tags=$tags;
         $categories=Category::get();
         return view('article.edit',compact('article','categories'));
     }
@@ -86,17 +96,33 @@ class ArticleController extends Controller
      */
     public function update(Request $request,$id)
     {
-        
+        $this->validate($request, [
+			'title' => 'required|max:50',
+			'text' => 'required',
+            'category' => 'required',
+            'img'=>'mimes:jpeg,jpg,png,img'
+		]);
+        $article=Article::find($id);
+        $article->img=null;
+
+        $upload=$request->file('img');
+        $filename=time().'.'.$upload->getClientOriginalExtension();
+        $upload->move(public_path('uploads'), $filename);
+
         $tags=$request->tags;
         $tags=explode(" ",$tags);
-        Article::where('id',$id)->update([
+        $article->update([
     		'title' => $request->title,
     		'text' => $request->text,
-            'category_id'=>$request->category
+            'category_id'=>$request->category,
+            'img'=>$filename
     	]);
         foreach($tags as $tag){
+            if($tag==" "){
+                continue;
+            }
             Tag::firstOrCreate(
-                ['name'=>$tag,'article_id'=>Article::get()->last()->id]
+                ['article_id'=>$request->article_id,'name'=>$tag]
             );
         }
         return redirect("/article/show/".$id);
@@ -107,6 +133,7 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
+        unlink(public_path('uploads/'.Article::find($id)->img));
         Article::destroy($id);
         return redirect("/");
     }
